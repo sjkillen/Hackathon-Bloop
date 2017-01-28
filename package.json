@@ -1,0 +1,23 @@
+{
+  "name": "bloop",
+  "version": "1.0.0",
+  "description": "DAudioAPp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spensaur-K/Bloop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Spensaur-K/Bloop/issues"
+  },
+  "homepage": "https://github.com/Spensaur-K/Bloop#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.14.0"
+  }
+}
