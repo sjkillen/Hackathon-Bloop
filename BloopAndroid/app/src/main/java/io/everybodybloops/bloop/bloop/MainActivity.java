@@ -1,6 +1,7 @@
 package io.everybodybloops.bloop.bloop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,20 +15,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final Context context = getApplicationContext();
         //Attach listener to button
         Button button = (Button) findViewById(R.id.connectButton);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-//                // do something on the click
-//                Context context = getApplicationContext();
-//                CharSequence text = "Hello";
-//                Toast toast = Toast.makeText(context, text,Toast.LENGTH_SHORT);
-//                toast.show();
-                // instert function call for establishing connection
+                //start connected activity
 
-
-            }
+                Intent intent = new Intent(context, Connected.class);
+                startActivity(intent);
+        }
         });
     }
 }
