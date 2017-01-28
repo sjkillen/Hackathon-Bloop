@@ -4,9 +4,8 @@ const express = require("express")
 
 dotenv.config()
 
-pathV = path.resolve(__dirname, "orchestrator/dist")
-console.log(pathV)
 app = express()
-app.use("/", express.static(pathV))
 app.listen(process.env.PORT)
-console.log(process.env.PORT)
+
+app.use("/sound", express.static(path.resolve(__dirname, "sounds")))
+app.use("/", express.static(path.resolve(__dirname, "orchestrator/dist")))
