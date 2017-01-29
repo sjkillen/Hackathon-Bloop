@@ -8,10 +8,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+import  com.github.nkzawa.socketio.client.IO;
+import  com.github.nkzawa.socketio.client.Socket;
+
+import com.github.nkzawa.socketio.client.Socket;
+
+import java.net.URISyntaxException;
 import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private Socket mSocket;
+
+    {
+        try {
+            //192.168.244.91:9000
+            mSocket = IO.socket("http://192.168.244.91:9000");
+        } catch (URISyntaxException e) {
+            System.out.println("URI exception handled");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +40,14 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.connectButton);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //start connected activity
+
+
                 new GetNTPTask().execute("time.nist.gov");
+                mSocket.connect();
+                System.out.println(mSocket);
                 Intent intent = new Intent(context, Connected.class);
-                startActivity(intent);
+
+               // startActivity(intent);
         }
         });
     }
