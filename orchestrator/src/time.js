@@ -6,6 +6,7 @@ import $ from "jquery";
 const BAR_WIDTH = 500;
 
 const x = d3.scaleLinear()
+const legend = d3.scaleOrdinal(d3.schemeCategory10)
 
 const svg = d3.select("svg#show");
 
@@ -14,7 +15,16 @@ export function getTime(){
    return +range;
 }
 
+$(() => {
+      function change() {
+            $("#select-time").text(`Play sound at ${$(".time").val()/1000} Seconds`);
+      }
+      $(".time").on("change", change);
+      $(".time").on("input", change);
+      change();
+});
 export function update({config, showData}) {
+      legend.domain(config.sounds)
       x.domain([0, config.showLength])
       .range([0, BAR_WIDTH]);
 
@@ -29,7 +39,7 @@ export function update({config, showData}) {
 
    join.enter()
    .append("circle")
-   .attr("fill", "blue")
+   .attr("fill", d => legend(d.sound))
    .attr("class", "moment")
    .attr("cx", d => {
       return x(d.time)

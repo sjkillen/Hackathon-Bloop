@@ -16,7 +16,7 @@ socket.on("connection", d => {
          sounds: d.sounds
    };
    const show = new Show((moments) => {
-   time({config, showData: moments});
+      time({config, showData: moments});
    })
    console.log("Connected")
    configurator(

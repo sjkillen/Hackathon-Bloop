@@ -34956,6 +34956,8 @@
 		var change = onChange.bind(null, config);
 		config.sound = config.sounds[0];
 
+		(0, _jquery2.default)("#gui").append((0, _jquery2.default)(gui.domElement));
+
 		gui.add(config, "gridDim").step(1).min(0).max(10).onChange(change);
 
 		gui.add(config, "showLength").step(1).min(0).max(1000 * 60 * 5).onChange(function (v) {
@@ -39385,6 +39387,7 @@
 	var BAR_WIDTH = 500;
 
 	var x = d3.scaleLinear();
+	var legend = d3.scaleOrdinal(d3.schemeCategory10);
 
 	var svg = d3.select("svg#show");
 
@@ -39393,12 +39396,21 @@
 	   return +range;
 	}
 
+	(0, _jquery2.default)(function () {
+	   function change() {
+	      (0, _jquery2.default)("#select-time").text("Play sound at " + (0, _jquery2.default)(".time").val() / 1000 + " Seconds");
+	   }
+	   (0, _jquery2.default)(".time").on("change", change);
+	   (0, _jquery2.default)(".time").on("input", change);
+	   change();
+	});
 	function update(_ref) {
 	   var _this = this;
 
 	   var config = _ref.config,
 	       showData = _ref.showData;
 
+	   legend.domain(config.sounds);
 	   x.domain([0, config.showLength]).range([0, BAR_WIDTH]);
 
 	   var join = svg.selectAll(".moment").data(showData, function (d) {
@@ -39407,7 +39419,9 @@
 
 	   join.exit().remove();
 
-	   join.enter().append("circle").attr("fill", "blue").attr("class", "moment").attr("cx", function (d) {
+	   join.enter().append("circle").attr("fill", function (d) {
+	      return legend(d.sound);
+	   }).attr("class", "moment").attr("cx", function (d) {
 	      return x(d.time);
 	   }).attr("cy", 25).attr("r", 10);
 	}
