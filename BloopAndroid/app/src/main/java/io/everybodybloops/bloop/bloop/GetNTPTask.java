@@ -18,10 +18,16 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
         super();
         this.a = a;
         this.mp = MediaPlayer.create(c ,R.raw.bloop );
+        this.mp2 = MediaPlayer.create(c,R.raw.beep02);
+        this.mp3 = MediaPlayer.create(c,R.raw.beep03);
+
     }
     private Date time;
     private JSONArray a;
     private MediaPlayer mp;
+    private MediaPlayer mp2;
+    private MediaPlayer mp3;
+
     @Override
     protected Void doInBackground(String... urls) {
         String TIME_SERVER = urls[0];
@@ -44,8 +50,9 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
             try{
                 JSONObject jObj =(JSONObject) a.get(i);
                 long soundTime = jObj.getLong("time");
+                String soundName = jObj.getString("sound");
                 //System.out.println(timeOffset);
-                EventWaitThread(returnTime, timeoffset, soundTime );
+                EventWaitThread(returnTime, timeoffset, soundTime, soundName );
 
             } catch (JSONException e){
                 System.out.println("JSON Exception");
@@ -54,7 +61,7 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
         }
         return null;
     };
-    private void EventWaitThread(final long ntpTime, final long oldTime, final long soundTime){//no see
+    private void EventWaitThread(final long ntpTime, final long oldTime, final long soundTime, final String soundName){//no see
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,11 +69,17 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
                     long newNtpTime = System.currentTimeMillis() - oldTime + ntpTime;
                     System.out.println("before the sleep");
                     System.out.println("ntptime: " + ntpTime);
-                    System.out.println("oldTime: " + oldTime);
-                    System.out.println("soundtime: " + soundTime);
+//                    System.out.println("oldTime: " + oldTime);
+                    System.out.println("soundname: " + soundName);
                     System.out.println(soundTime - newNtpTime);
                     Thread.sleep(soundTime - newNtpTime);
-                    mp.start();
+                    switch(soundName){
+                        case "bloop.mp3": mp.start();
+                        case "beep-02.mp3" : mp2.start();
+                        case "beep-03.mp3" : mp3.start();
+
+                    }
+
                     System.out.println("it it here");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -75,6 +88,11 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
         }).start();
 
 
+    }
+
+    private void closeMediaPlayer(){
+        mp.release();
+        mp = null;
     }
 }
 
