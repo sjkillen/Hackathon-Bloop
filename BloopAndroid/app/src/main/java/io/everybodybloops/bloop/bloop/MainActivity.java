@@ -16,6 +16,10 @@ import  com.github.nkzawa.emitter.Emitter;
 
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URISyntaxException;
 import java.util.Date;
 
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     {
         try {
-            //192.168.244.91:9000
+            //192.168.244.91:9000  i forgot the http dummy
             mSocket = IO.socket("http://192.168.244.91:9000");
         } catch (URISyntaxException e) {
             System.out.println("URI exception handled");
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //Attach listener to button
         //connect to the socket
         mSocket.on("pong", onPong);
+        mSocket.on("showtime", onShowtime);
         mSocket.connect();
         Button button = (Button) findViewById(R.id.connectButton);
         button.setOnClickListener(new View.OnClickListener(){
@@ -58,9 +63,28 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent = new Intent(context, Connected.class);
 
                // startActivity(intent);
+               //CANT STOP NO BRAKES 
         }
         });
     }
+    private Emitter.Listener onShowtime = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            long timeOffset = 0;
+            JSONArray data = (JSONArray) args[0];
+            for(int i = 0; i < data.length(); i++){
+                try{
+                    JSONObject jObj =(JSONObject) data.get(i);
+                    timeOffset = jObj.getLong("time");
+                    System.out.println(timeOffset);
+                } catch (JSONException e){
+                    System.out.println("JSON Exception");
+                }
+                System.out.println(timeOffset);
+            }
+        }
+    };
+
     private Emitter.Listener onPong = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
