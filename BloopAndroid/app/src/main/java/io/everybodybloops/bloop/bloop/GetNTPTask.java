@@ -14,19 +14,28 @@ import java.net.InetAddress;
 import java.util.Date;
 
 public class GetNTPTask extends AsyncTask <String,Void,Void> {
-    GetNTPTask(JSONArray a, Context c){
+    GetNTPTask(JSONArray a, Context c, int x, int y){
         super();
         this.a = a;
-        this.mp = MediaPlayer.create(c ,R.raw.bloop );
-        this.mp2 = MediaPlayer.create(c,R.raw.beep02);
-        this.mp3 = MediaPlayer.create(c,R.raw.beep03);
+        this.xpos = x;
+        this.ypos = y;
+        this.mp = MediaPlayer.create(c ,R.raw.realvillan );
+        this.mp2 = MediaPlayer.create(c,R.raw.sax1);
+        this.mp3 = MediaPlayer.create(c,R.raw.sax2);
+        this.mp4 = MediaPlayer.create(c,R.raw.num1);
+        this.mp5 = MediaPlayer.create(c,R.raw.bloop);
 
     }
     private Date time;
     private JSONArray a;
+    private int xpos;
+    private int ypos;
     private MediaPlayer mp;
     private MediaPlayer mp2;
     private MediaPlayer mp3;
+    private MediaPlayer mp4;
+    private MediaPlayer mp5;
+
 
     @Override
     protected Void doInBackground(String... urls) {
@@ -51,11 +60,19 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
                 JSONObject jObj =(JSONObject) a.get(i);
                 long soundTime = jObj.getLong("time");
                 String soundName = jObj.getString("sound");
+                System.out.println(jObj.getLong("x"));
+                System.out.println(jObj.getLong("y"));
+                if (xpos == (int)jObj.getLong("x") && ypos == (int)jObj.getLong("y")){
+                    EventWaitThread(returnTime, timeoffset, soundTime, soundName );
+                }else {
+                    System.out.println("not at your coordinates");
+                }
+
                 //System.out.println(timeOffset);
-                EventWaitThread(returnTime, timeoffset, soundTime, soundName );
+
 
             } catch (JSONException e){
-                System.out.println("JSON Exception");
+                System.out.println("JSON Exception" + e);
             }
             //  System.out.println(timeOffset);
         }
@@ -74,10 +91,13 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
                     System.out.println(soundTime - newNtpTime);
                     Thread.sleep(soundTime - newNtpTime);
                     switch(soundName){
-                        case "bloop.mp3": mp.start();
-                        case "beep-02.mp3" : mp2.start();
-                        case "beep-03.mp3" : mp3.start();
-
+                        case "realvillan.mp3": mp.start();
+                        case "sax1.mp3" : mp2.start();
+                        case "sax2.mp3" : mp3.start();
+                        case "num1.mp3" : mp4.start();
+                        case "bloop.mp3" : mp5.start();
+                        default:
+                                break;
                     }
 
                     System.out.println("it it here");
