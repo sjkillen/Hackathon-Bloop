@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -28,12 +30,17 @@ public class MainActivity extends AppCompatActivity {
 
     private Socket mSocket;
     private String pingMessage = "HEY YOU GUYYYYYYYYYYYYSSS";
-    public MediaPlayer mp;
+    public int xpos = 0;
+    public int ypos = 0;
+    public boolean muteState = false;
+
+
 
     {
         try {
             //192.168.244.91:9000  i forgot the http dummy
             mSocket = IO.socket("http://192.168.244.91:9000");
+
         } catch (URISyntaxException e) {
             System.out.println("URI exception handled");
         }
@@ -51,28 +58,35 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on("pong", onPong);
         mSocket.on("showtime", onShowtime);
         mSocket.connect();
+        Toast toast = Toast.makeText(getApplicationContext(),"connected to server",Toast.LENGTH_SHORT );
+        toast.show();
         Button button = (Button) findViewById(R.id.connectButton);
+        final EditText xposEdit = (EditText) findViewById(R.id.editText2);
+        final EditText yposEdit = (EditText) findViewById(R.id.editText3);
+
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
 
                 //new GetNTPTask().execute("time.nist.gov");
-
-                System.out.println(mSocket);
+                xpos = Integer.valueOf(xposEdit.getText().toString());
+                ypos = Integer.valueOf(yposEdit.getText().toString());
+                System.out.println("xpos: " + xpos+ " - ypos: " + ypos);
                 mSocket.emit("ping", pingMessage);
-                //Intent intent = new Intent(context, Connected.class);
 
-               // startActivity(intent);
                //CANT STOP NO BRAKES
         }
         });
     }
+
+
     private Emitter.Listener onShowtime = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             long timeOffset = 0;
             JSONArray data = (JSONArray) args[0];
-            new GetNTPTask(data, getApplicationContext()).execute("time.nist.gov");
+
+            new GetNTPTask(data, getApplicationContext(), xpos, ypos).execute("time.nist.gov");
 
         }
     };
