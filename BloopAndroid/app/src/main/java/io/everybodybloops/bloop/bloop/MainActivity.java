@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //start connected activity
-
+                new GetNTPTask().execute("time.nist.gov");
                 Intent intent = new Intent(context, Connected.class);
                 startActivity(intent);
         }

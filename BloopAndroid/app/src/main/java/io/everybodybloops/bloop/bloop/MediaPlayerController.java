@@ -18,36 +18,22 @@ public class MediaPlayerController extends Connected {
     MediaPlayer mediaPlayer;
 
     //constructor for the media player class
-    MediaPlayerController(String url) {// will also need time.
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        // Try and get the data source from the url passed
+    MediaPlayerController(Context c) {// will also need time.
+        MediaPlayer mediaPlayer = MediaPlayer.create(c, R.raw.bloop);
 
-        try {
-            mediaPlayer.setDataSource(url);
 
-        System.out.println("datasource found" + url);
-           mediaPlayer.prepare();
-       } catch (java.io.IOException e){
-           // the file could not be prepared
-           CharSequence text = "File could not be prepared";
-            System.out.println("prepare failed");
-          // Toast toast = Toast.makeText(context, text,Toast.LENGTH_SHORT);
-           //toast.show();
-
-       }
-        System.out.println("player prepared");
      }
 
     public void playSound(){ // Needs to take a time
-        mediaPlayer.start();
-        mediaPlayer.release();
-        mediaPlayer = null;
+        this.mediaPlayer.start();
+
     }
 
     // method to close the MediaPlayer instance
     public void close(){
         mediaPlayer.release();
+        mediaPlayer = null;
     }
+
 
 }

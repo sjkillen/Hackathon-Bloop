@@ -18,14 +18,14 @@ public class Connected extends AppCompatActivity {
     MediaPlayer mp;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connected);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.bloop);
-
+        final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.bloop);
+        //final MediaPlayerController mpc = new MediaPlayerController(getApplicationContext());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,17 +38,23 @@ public class Connected extends AppCompatActivity {
         playbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//
-                mp.start();
-
+                playSound(mp);
             }
         });
     }
-    // things to run when the activity pauses.
-    protected void onPause(){
-        mp.release();
-        mp = null;
+
+
+    public void playSound(MediaPlayer mp){
+        mp.start();
     }
-    
+    //figure out why the application crashes when you try and release the mediaplayer.
+    protected void onPause(){
+        this.mp.release();
+        this.mp = null;
+    }
+
+    protected void onDestroy(){
+        this.mp.release();
+        this.mp = null;
+    }
 }
