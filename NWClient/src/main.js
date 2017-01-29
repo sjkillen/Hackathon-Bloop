@@ -1,32 +1,46 @@
-import { update as grid } from "./grid";
-import { configurator } from "./configurator";
-import { Show } from "./show";
-import { update as time } from "./time";
-import $ from "jquery";
-import {} from "./time";
 
-const socket = io();
+const ntpClient = require('ntp-client')
+
+
+const host = prompt("Enter IP/PORT");
+
+const socket = io(host);
+
+import $ from "jquery";
+
 
 socket.on("connection", d => {
-   const config = {
-         cellDim: 100,
-         cellPadd: 5,
-         gridDim: 3,
-         showLength: 10000,
-         sounds: d.sounds
-   };
-   const show = new Show((moments) => {
-      time({config, showData: moments});
-   })
-   console.log("Connected")
-   configurator(
-      config,
-      () => {
-         grid(config, show)
-      }
-   );
-   $("#submit").on("click", e => {
-      socket.emit("showtime", show.moments);
-   })
-});
+      ntpClient.getNetworkTime("time.nist.gov", 123, function(err, date) {
+            const ntime = date.getTime();
+            const stime = (new Date).getTime();
 
+            const auds = {}
+            for (const sound of d.sounds) {
+                  const aud = new Audio(`${host}/sound/${sound}`)
+                  aud.preload = true;
+                  auds[sound] = aud;
+            }
+
+            socket.on("showtime", show => {
+                  for (const moment of show) {
+                        if (matchCoord(moment)) {
+                              setTimeout(() => {
+                                    auds[moment.sound].play();
+                              }, calcDelay(moment.time));
+                        }
+                  }
+            })
+
+            function matchCoord(moment) {
+                  const x = +$("#x").val();
+                  const y = +$("#y").val();
+                  return moment.x == x && y == moment.y;
+            }
+            function calcDelay(momtime) {
+                  const newstime = (new Date).getTime();
+                  const newntime = newstime - stime + ntime;
+                  const delay = momtime - newntime;
+                  return delay
+            }
+      });
+});

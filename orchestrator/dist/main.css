@@ -1,0 +1,9 @@
+rect.cell:hover {
+  fill: lightgreen;
+  cursor: pointer; }
+input[type="range"].time {
+  width: 500px; }
+
+svg#show {
+  width: 500px;
+  height: 50px; }

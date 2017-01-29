@@ -5,9 +5,15 @@ const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
-  entry: ["babel-polyfill", path.join(path.join(__dirname, "src"), "main.js")],
+const nodeExternals = require('webpack-node-externals');
 
+
+module.exports = {
+  entry: [path.join(path.join(__dirname, "src"), "main.js")],
+  externals: [nodeExternals({
+    whitelist: ["jquery"]
+  })],
+  target: 'node',
   output: {
     path: path.join(__dirname, "dist"),
     filename: "bundle.js"
