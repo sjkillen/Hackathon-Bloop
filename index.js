@@ -21,7 +21,7 @@ http.listen(process.env.PORT, function (){
   console.log('listening on *:'+process.env.PORT);
 });
 
-const ONE_SEC = 1000 * 1000;
+const ONE_SEC = 1000;
 
 io.on("connection", socket => {
     socket.emit("connection", { sounds });
@@ -31,9 +31,13 @@ io.on("connection", socket => {
     });
     socket.on("showtime", show => {
         ntpClient.getNetworkTime("time.nist.gov", 123, function(err, date) {
-        const startTime = date.getTime() + ONE_SEC * 10;
+        if (err) {
+            console.log("ntp error")
+            return;
+        }
+        const startTime = date.getTime() + ONE_SEC * 3;
             show.forEach(moment => {
-                moment.time = startTime + moment.time * 1000
+                moment.time = startTime + moment.time
             });
             socket.broadcast.emit("showtime", show);
         });
