@@ -1,0 +1,10 @@
+$width: 500px;
+
+input[type="range"].time {
+        width: $width;
+}
+
+svg#show {
+        width: $width;
+        height: 50px;
+}
