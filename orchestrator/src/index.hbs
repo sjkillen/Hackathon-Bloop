@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>BLOOP-OFF</title>
+                <script src="/socket.io/socket.io.js"></script>
+        </head>
+        <body>
+                <div id="gui"></div>
+                <svg id="show"></svg>
+                <div>
+                        Select When to play sound
+                </div>
+                <input value="0" class="time" type="range" min="0" max="100" />
+                <span id="select-time"></span>
+                <div>
+                        <button id="submit">Finish and Create Show</button>
+                </div>
+                <div>
+                        Pick Where to play the sound
+                </div>
+                <svg id="drawing"></svg>
+        </body>
+</html>
