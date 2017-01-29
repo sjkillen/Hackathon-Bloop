@@ -99,6 +99,7 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
                         default:
                                 break;
                     }
+                    //asdasda
 
                     System.out.println("it it here");
                 } catch (InterruptedException e) {
