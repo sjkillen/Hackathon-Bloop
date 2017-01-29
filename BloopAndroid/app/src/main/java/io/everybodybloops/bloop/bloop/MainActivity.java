@@ -56,14 +56,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
 
 
-                new GetNTPTask().execute("time.nist.gov");
+                //new GetNTPTask().execute("time.nist.gov");
 
                 System.out.println(mSocket);
                 mSocket.emit("ping", pingMessage);
                 //Intent intent = new Intent(context, Connected.class);
 
                // startActivity(intent);
-               //CANT STOP NO BRAKES 
+               //CANT STOP NO BRAKES
         }
         });
     }
@@ -72,16 +72,8 @@ public class MainActivity extends AppCompatActivity {
         public void call(Object... args) {
             long timeOffset = 0;
             JSONArray data = (JSONArray) args[0];
-            for(int i = 0; i < data.length(); i++){
-                try{
-                    JSONObject jObj =(JSONObject) data.get(i);
-                    timeOffset = jObj.getLong("time");
-                    System.out.println(timeOffset);
-                } catch (JSONException e){
-                    System.out.println("JSON Exception");
-                }
-                System.out.println(timeOffset);
-            }
+            new GetNTPTask(data, getApplicationContext()).execute("time.nist.gov");
+
         }
     };
 
@@ -89,11 +81,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             //make the Mediaplayer object and call it as soon as its ready (quick)
-            MediaPlayer mp = MediaPlayer.create(getApplicationContext(),R.raw.bloop );
-            mp.start();
+//            MediaPlayer mp = MediaPlayer.create(getApplicationContext(),R.raw.bloop );
+//            mp.start();
 
         }
     };
+
 
 
 }
