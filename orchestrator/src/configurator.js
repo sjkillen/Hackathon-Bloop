@@ -7,8 +7,6 @@ export function configurator(config, onChange) {
 	const change = onChange.bind(null, config);
 	config.sound = config.sounds[0]
 
-	$("#gui").append($(gui.domElement))
-
 	gui.add(config, "gridDim")
 		.step(1)
 		.min(0)
