@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent = new Intent(context, Connected.class);
 
                // startActivity(intent);
-               //more.. MORE 
+               //CANT STOP NO BRAKES 
         }
         });
     }
