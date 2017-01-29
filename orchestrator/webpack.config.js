@@ -38,7 +38,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style-loader", `css-loader!sass-loader!${path.join(__dirname, "./isolate_loader.js")}`)
+        loader: ExtractTextPlugin.extract("style-loader", `css-loader!sass-loader`)
       },
     ]
   },
