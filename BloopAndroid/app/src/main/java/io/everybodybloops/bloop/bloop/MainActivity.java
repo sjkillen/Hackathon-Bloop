@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import  com.github.nkzawa.socketio.client.IO;
 import  com.github.nkzawa.socketio.client.Socket;
+import  com.github.nkzawa.emitter.Emitter;
 
 import com.github.nkzawa.socketio.client.Socket;
 
@@ -21,6 +22,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private Socket mSocket;
+    private String pingMessage = "HEY YOU GUYYYYYYYYYYYYSSS";
 
     {
         try {
@@ -37,18 +39,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final Context context = getApplicationContext();
         //Attach listener to button
+        //connect to the socket
+        mSocket.on("pong", onPong);
+        mSocket.connect();
         Button button = (Button) findViewById(R.id.connectButton);
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
 
                 new GetNTPTask().execute("time.nist.gov");
-                mSocket.connect();
+
                 System.out.println(mSocket);
-                Intent intent = new Intent(context, Connected.class);
+                mSocket.emit("ping", pingMessage);
+                //Intent intent = new Intent(context, Connected.class);
 
                // startActivity(intent);
         }
         });
     }
+    private Emitter.Listener onPong = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            
+        }
+    };
+
 }
