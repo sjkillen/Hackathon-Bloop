@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private String pingMessage = "HEY YOU GUYYYYYYYYYYYYSSS";
     public int xpos = 0;
     public int ypos = 0;
+    public boolean muteState = false;
 
 
 
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.connectButton);
         final EditText xposEdit = (EditText) findViewById(R.id.editText2);
         final EditText yposEdit = (EditText) findViewById(R.id.editText3);
+
         button.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
@@ -75,11 +78,14 @@ public class MainActivity extends AppCompatActivity {
         }
         });
     }
+
+
     private Emitter.Listener onShowtime = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
             long timeOffset = 0;
             JSONArray data = (JSONArray) args[0];
+
             new GetNTPTask(data, getApplicationContext(), xpos, ypos).execute("time.nist.gov");
 
         }

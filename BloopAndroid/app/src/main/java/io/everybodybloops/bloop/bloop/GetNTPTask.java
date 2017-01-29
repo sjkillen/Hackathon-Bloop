@@ -91,15 +91,25 @@ public class GetNTPTask extends AsyncTask <String,Void,Void> {
                     System.out.println(soundTime - newNtpTime);
                     Thread.sleep(soundTime - newNtpTime);
                     switch(soundName){
-                        case "realvillan.mp3": mp.start();
-                        case "sax1.mp3" : mp2.start();
-                        case "sax2.mp3" : mp3.start();
-                        case "num1.mp3" : mp4.start();
-                        case "bloop.mp3" : mp5.start();
+                        case "realvillan.mp3":
+                            mp.start();
+                            break;
+                        case "sax1.mp3" :
+                            mp2.start();
+                            break;
+                        case "sax2.mp3" :
+                            mp3.start();
+                            break;
+                        case "num1.mp3" :
+                            mp4.start();
+                            break;
+                        case "bloop.mp3" :
+                            mp5.start();
+                            break;
                         default:
                                 break;
                     }
-                    //asdasda
+
 
                     System.out.println("it it here");
                 } catch (InterruptedException e) {
